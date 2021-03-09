@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            height: 4000px;
+        }
+
+        .schedule {
+            width: 0%;
+            height: 6px;
+            position: fixed;
+            top: 0;
+            background-color: pink;
+            transition: width 0.1s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="schedule"></div>
+    <script>
+        let body = document.body;
+        let schedule = body.querySelector(".schedule");
+        console.log(schedule);
+
+        window.onscroll = function () {
+            let scroll = (scrollY / 3527).toFixed(2) * 1;
+            let bar = Math.round(window.innerWidth * scroll * 1);
+            console.log("滚动：", scroll);
+            console.log("长条：", (bar / window.innerWidth).toFixed(2)*100);
+            schedule.style.width = (bar / window.innerWidth).toFixed(2)*100 + "%";
+        }
+    </script>
+</body>
+
+</html>
