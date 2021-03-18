@@ -57,6 +57,7 @@
     1）启动git bash：选中要作为git工程存放的目录，然后点击鼠标右键选择git bash即可。
 
     2）git是分布式版本控制工具，所以我们需要填写用户名和邮箱作为一个标志。在 c:\user\lixi19861125 路径下的.gitconfig文件里面，可以看到--global属性，所有的git项目都会公用这个属性。（下面是配置--global的用户名和用户邮箱）
+
     用户名：git config --global user.name "lili"
     用户邮箱：git config --global user.email "lixi@1000phone.com"
 ```
@@ -166,32 +167,63 @@
 ```
 
 3、分支冲突
-1）冲突一般是指两种版本的仓库合并时，相同文件同一位置的代码不一致而导致版本管理工具无法判断保留哪一版本而出现的提示。冲突一般需要程序员手动解决
+1）冲突是指上传或同步代码时，由于你和他人都修改了同一文件同一位置得代码，代码管理工具无法判断究竟以谁得版本为准，就会报告冲突。冲突需要程序员手动解决
 
-2）在合并分支时解决冲突
+2）解决冲突三板斧
 ```js
-    // 2.1）先在master、common分支各创建一个conflict.txt文件，并让里面的内容不一致，然后提交合并。
-
-    // 2.2）当出现冲突提示的时候，根据提示的位置去协商修改里面的内容为相同部分即可。
+    2.1）使用vi指令修改有冲突的代码，并合并
+    2.2）git add
+    2.3）git commit
 ```
+![avatar](协作冲突.jpg)
 
 
 十、github
-本地代码和远端的相关操作
+1、本地代码和远端的相关操作：
 ```js
-    // 连接远端的github仓库，origin指得是远端代号，一半远端代号都是这个，但也可以自定义。
+    // 连接远端的github仓库，origin指得是远端代号，一般远端代号都是这个，但也可以自定义。
     git remote add origin url地址
 
-    // 推送本地版本库代码到远端。-u参数是可选的，添加了参数-u之后，后面可以直接使用 git push 代替 git push origin 分支名。
+    // 推送本地版本库代码到远端。-u参数是可选的，添加了参数-u之后，后面可以直接使用git push代替git push origin分支名。
     git push -u origin 分支名
 
-    // 克隆远端仓库代码到本地。项目的目录名指为克隆的项目在本地新建一个目录名，选填项，如果不填默认就是使用github的仓库名。
+    // 克隆远端仓库代码到本地。项目的目录名指为克隆的项目在本地新建一个目录名，选填项，如果不填默认就是使用github的仓库名。（仅在第一次下载项目时使用）
     git clone url地址 项目的目录名
  
     // 拉取远端仓库代码到本地
     git pull origin 分支名
 ```
 ![avatar](本地库提交代码到github上的流程.png)
+git问题处理扩展：
+1）当git push卡住不动时，可以将sideband属性设置为false来解决问题。
+```js
+    // 全局：
+    git config –-global sendpack.sideband false
+
+    // 仓库：
+    git config --local sendpack.sideband false
+```
+2）当git clone中途停止不动时，可能是下载速度太慢导致，可以使用国内镜像来解决网速慢得问题。
+```js
+    // 可以把github.com 替换为 github.com.cnpmjs.org或者git.sdut.me
+    原来：git clone https://github.com/aaa/xxx.git
+    替换成：git clone https://github.com.cnpmjs.org/aaa/xxx.git
+```
+
+2、创建好项目后会有一个项目URL（提供给线下用户和github通信）：
+1）HTTPS表示是基于互联网来访问的。
+2）SSH表示是基于局域网来访问的。
+
+3、邀请collaborate加入项目。
+在当前项目的Settings => Manage access => Manage access区域会有一个invite a collaborator按钮，点击即可搜索collaborator的名称，邀请其加入项目。邀请成功后会给collaborator发送一封邀请邮件。如下图：
+![avatar](邀请collaborator.jpg)
 
 
-十一、协作冲突
+十一、第三方协作场景
+1、把相关项目链接给到第三方，然后第三方可以通过fork把项目fork到自己的仓库。
+2、改动fork到自己仓库的项目，然后Pull requests => New pull request
+3、提交了New pull request之后，回到项目创建者的分支，然后审核通过pull request就可以了。
+
+
+十二、什么是gitlab
+gitlab就是“自架私服版”的github，官网地址：https://about.gitlab.com，下载网址：https://about.gitlab.com/install
